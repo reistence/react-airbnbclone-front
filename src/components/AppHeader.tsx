@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Link } from "react-router-dom";
 import "../styles/general.scss";
 import styles from "./header.module.scss";
 import logo from "../assets/logo.png";
@@ -8,11 +8,11 @@ export default function () {
   const navHeaderList = [
     {
       label: "home",
-      link: "/home",
+      link: "/",
       routeName: "/",
     },
     {
-      label: "Ricerca",
+      label: "Search",
       link: "/advancedSearch",
       routeName: "/advancedSearch",
     },
@@ -40,7 +40,7 @@ export default function () {
   }
 
   return (
-    <header className={scrollPosition > 50 ? `${styles.faded}` : ""}>
+    <header className={scrollPosition > 20 ? `${styles.faded}` : ""}>
       <div className={styles.container}>
         <div className={styles.logo}>
           <img src={logo} alt="Boolking" />
@@ -49,9 +49,12 @@ export default function () {
 
         <nav>
           <ul>
-            {navHeaderList.map((hlink, key) => (
-              <li key={key}>{hlink.label}</li>
-            ))}
+            {navHeaderList &&
+              navHeaderList.map((hlink, key) => (
+                <li key={key}>
+                  <Link to={hlink.routeName}> {hlink.label}</Link>
+                </li>
+              ))}
             |
             <li className={styles.external}>
               <a href="http://127.0.0.1:8000/login">Login</a>
