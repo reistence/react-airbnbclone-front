@@ -1,0 +1,206 @@
+@use "../styles/partials/_mixins" as *;
+
+header {
+  position: fixed;
+  height: 70px;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: $white;
+  width: 100%;
+
+  &.faded {
+    background-color: rgba(255, 255, 255, 0.594);
+    transition: 500ms;
+    backdrop-filter: blur(10px);
+    height: 40px;
+    box-shadow: 1px 1px 5px rgb(193, 185, 185);
+
+    span {
+      display: none;
+    }
+
+    &:hover {
+      background-color: $white;
+      filter: blur(0);
+      height: 70px;
+
+      span {
+        display: block;
+      }
+    }
+
+    .container {
+      justify-content: space-between;
+      padding: 0;
+    }
+  }
+
+  .container {
+    padding: 1em 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+
+    .logo {
+      width: 2em;
+      transition: 500ms;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5em;
+
+      &:hover {
+        transform: scale(1.1);
+        transition: 500ms;
+      }
+
+      img {
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      span {
+        color: $red;
+        font-weight: 500;
+        font-size: 1.2rem;
+      }
+    }
+
+    nav {
+      width: 70%;
+    }
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1em;
+      color: $gray;
+
+      li {
+        color: black;
+        position: relative;
+        cursor: pointer;
+        text-transform: uppercase;
+
+        font-weight: light;
+        font-size: 0.8rem;
+        position: relative;
+
+        &:hover {
+          color: $red;
+          transition: 200ms;
+        }
+
+        &:after {
+          content: " ";
+          background-color: $red;
+          width: 100%;
+          position: absolute;
+          height: 0px;
+          bottom: -10px;
+          left: 0;
+          z-index: 999;
+          display: inline-block;
+        }
+
+        &:hover::after {
+          animation: grow-border 200ms;
+          height: 3px;
+        }
+
+        @keyframes grow-border {
+          0% {
+            height: 0;
+          }
+
+          100% {
+            height: 2px;
+          }
+        }
+      }
+
+      .external {
+        // font-size: .9rem;
+        color: $gray;
+        text-transform: uppercase;
+        font-weight: light;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .hamnav {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  header {
+    .logo {
+      span {
+        display: none;
+      }
+    }
+
+    .container {
+      nav {
+        display: none;
+      }
+
+      .hamnav {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        background-color: inherit;
+        transition: all 250ms linear;
+
+        i,
+        .fa-bars {
+          transition: all 250ms linear;
+        }
+
+        ul {
+          position: absolute;
+          top: 30px;
+          right: -10px;
+          width: 40vw;
+          min-width: 150px;
+          display: flex;
+          border-left: 3px solid $red;
+          flex-direction: column;
+          background-color: rgba(255, 255, 255, 0.594);
+          padding: 1.5em 1em;
+          align-items: flex-start;
+          border-radius: 5px;
+          transition: 200ms;
+          backdrop-filter: blur(10px);
+
+          &:hover {
+            background-color: $white;
+          }
+
+          li {
+            transition: all 300ms;
+            font-size: 0.9rem;
+            padding: 0.5em;
+          }
+
+          li:hover {
+            transform: translateX(10px);
+            transition: all 300ms;
+            border-radius: 0 10px;
+          }
+        }
+      }
+    }
+  }
+}

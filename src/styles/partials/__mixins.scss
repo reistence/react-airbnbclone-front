@@ -1,0 +1,49 @@
+$red: #ff5a60;
+$greybg: #f3f3f3;
+$gray: #868686;
+$cloud: #c6c1bd;
+$dustStorm: #e4cdc9;
+$naturalGrey: #8b8a87;
+$dustGrey: #9c9c9c;
+$white: white;
+
+@mixin my-container {
+  width: 85%;
+  margin: 0 auto;
+}
+
+@mixin my-container-fluid {
+  width: 100%;
+}
+
+@mixin my-flex($direction, $justify) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: center;
+}
+
+//Media Query
+@mixin for-sm {
+  @media screen and (min-width: 576px) {
+    @content;
+  }
+}
+
+@mixin for-md {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin for-lg {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin for-xl {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+} ;
