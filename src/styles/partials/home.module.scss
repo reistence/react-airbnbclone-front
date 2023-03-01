@@ -1,0 +1,98 @@
+@use "./_mixins" as *;
+
+.mycontainerfluid {
+  @include my-container-fluid;
+  padding-top: 1em;
+  color: black;
+  height: 100%;
+
+  h1 {
+    color: $red;
+    text-align: center;
+  }
+
+  h2 {
+    margin: 0em 2em 1em;
+  }
+
+  .container {
+    @include my-container;
+    align-items: center;
+    gap: 1.5em;
+    margin-top: 2em;
+    padding: 1em 0 4em;
+    height: 100%;
+  }
+
+  .search {
+    @include my-flex(row, center);
+    margin: 1em auto 2em;
+    gap: 0.5em;
+    border: 2px solid $greybg;
+
+    padding: 0.5em;
+    border-radius: 20px;
+    width: 60%;
+    min-width: 30vmin;
+    transition: all 300ms;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: all 300ms;
+      box-shadow: 10px 10px 20px #b3c9d3;
+
+      i {
+        transition: all 200ms;
+        color: $red;
+        background-color: white;
+      }
+
+      //   i{
+      //  transition: all 300ms;
+
+      //     color: white;
+      //   }
+    }
+
+    input {
+      padding: 0.5em;
+      min-width: 20vmin;
+      width: 15em;
+      border-radius: 20px;
+      border: none;
+      font-size: 1rem;
+      font-weight: 100 !important;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    i {
+      font-size: 1.3rem;
+      background-color: $red;
+      color: white;
+      padding: 0.4em;
+      border-radius: 50%;
+      transition: all 200ms;
+
+      &:hover {
+        transition: all 200ms;
+        color: $red;
+        background-color: white;
+      }
+    }
+
+    // @media screen and (max-width: 500px) {
+    //   @include my-flex(column, center)
+    //              }
+  }
+
+  .cardscontainer {
+    @include my-container;
+    @include my-flex(row, start);
+    flex-wrap: wrap;
+    gap: 1em 0.5em;
+    margin-bottom: 2em;
+  }
+}
