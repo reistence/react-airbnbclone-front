@@ -77,11 +77,11 @@ export default function AdvancedSearch() {
 
     axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
       setAllEstates([]);
-      console.log(options, "OPTIONS");
+      // console.log(options, "OPTIONS");
       if (res.data.success) {
         setAllEstates(res.data.results);
-        console.log("filtrati", allEstates);
-        // console.log(res.data.results);
+        // console.log("filtrati", allEstates);
+        console.log(res.data.results);
 
         for (let i = 0; i < res.data.results.length; i++) {
           const element = res.data.results[i];
@@ -95,17 +95,15 @@ export default function AdvancedSearch() {
                 parsedElement > Date.parse(now) &&
                 !sponsoredEstates.includes(element)
               ) {
-                // sponsoredEstates.push(element);
                 setSponsoredEstates((prev) => [...prev, element]);
               } else if (
                 !unSponsoredEstates.filter((e) => e.id === element.id)
               ) {
-                // unSponsoredEstates.push(element);
                 setUnSponsoredEstates((prev) => [...prev, element]);
-                console.log(unSponsoredEstates, "PRIMO IF");
+                // unSponsoredEstates.push(element);
+                console.log(unSponsoredEstates, "OOOOO");
               } else if (!sponsoredEstates.filter((e) => e.id === element.id)) {
                 setSponsoredEstates((prev) => [...prev, element]);
-                // sponsoredEstates.push(element);
               }
             }
           } else {
@@ -193,8 +191,8 @@ export default function AdvancedSearch() {
     return () => map.remove();
   }, [sponsoredEstates, unSponsoredEstates]);
 
-  console.log(unSponsoredEstates, "uns");
-  console.log(sponsoredEstates, "s");
+  // console.log(unSponsoredEstates, "uns");
+  // console.log(sponsoredEstates, "s");
   return (
     <>
       <div className={styles.mycontainerfluid}>
