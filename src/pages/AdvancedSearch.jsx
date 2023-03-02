@@ -6,8 +6,8 @@ import styles from "../styles/partials/adsearch.module.scss";
 import EstateCard from "../components/EstateCard";
 
 export default function AdvancedSearch() {
+  //servizi
   const [allServices, setAllServices] = useState([]);
-
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/services").then((res) => {
       res.data.results && setAllServices(res.data.results);
@@ -17,16 +17,19 @@ export default function AdvancedSearch() {
   let city, address, rooms, beds;
   const [distance, setDistance] = useState(15);
   const [filteredServices, setFilteredServices] = useState([]);
-  let sponsoredEstates = [];
-  let unSponsoredEstates = [];
+  // let sponsoredEstates = [];
+  // let unSponsoredEstates = [];
+
+  const [sponsoredEstates, setSponsoredEstates] = useState([]);
+  const [unSponsoredEstates, setUnSponsoredEstates] = useState([]);
 
   function handleSubmit(event) {
     event.preventDefault();
     setAllEstates([]);
-    // setSponsoredEstates([]);
-    // setUnSponsoredEstates([]);
-    sponsoredEstates = [];
-    unSponsoredEstates = [];
+    setSponsoredEstates([]);
+    setUnSponsoredEstates([]);
+    // sponsoredEstates = [];
+    // unSponsoredEstates = [];
 
     city = event.target.elements.city.value;
     address = event.target.elements.address.value;
@@ -49,7 +52,7 @@ export default function AdvancedSearch() {
     if (distance) {
       options.params.distance = distance;
     } else {
-      option.params.distance = 20;
+      options.params.distance = 20;
     }
 
     if (address) {
@@ -71,13 +74,15 @@ export default function AdvancedSearch() {
     }
 
     axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
-      console.log("filtrati");
+      setAllEstates([]);
+      console.log(options, "OPTIONS");
       if (res.data.success) {
         setAllEstates(res.data.results);
-        console.log(res.data.results);
+        console.log("filtrati", allEstates);
+        // console.log(res.data.results);
 
-        for (let i = 0; i < allEstates.length; i++) {
-          const element = allEstates[i];
+        for (let i = 0; i < res.data.results.length; i++) {
+          const element = res.data.results[i];
 
           if (element.sponsors.length > 0) {
             for (let j = 0; j < element.sponsors.length; j++) {
@@ -88,21 +93,21 @@ export default function AdvancedSearch() {
                 parsedElement > Date.parse(new Date()) &&
                 !sponsoredEstates.includes(element)
               ) {
-                sponsoredEstates.push(element);
-                // setSponsoredEstates([...sponsoredEstates, element]);
+                // sponsoredEstates.push(element);
+                setSponsoredEstates((prev) => [...prev, element]);
               } else if (
                 unSponsoredEstates.filter((e) => e.id === element.id)
               ) {
-                unSponsoredEstates.push(element);
-                // setUnSponsoredEstates([...unSponsoredEstates, element]);
+                // unSponsoredEstates.push(element);
+                setUnSponsoredEstates((prev) => [...prev, element]);
               } else if (sponsoredEstates.filter((e) => e.id === element.id)) {
-                // setSponsoredEstates([...sponsoredEstates, element]);
-                sponsoredEstates.push(element);
+                setSponsoredEstates((prev) => [...prev, element]);
+                // sponsoredEstates.push(element);
               }
             }
           } else {
-            // setUnSponsoredEstates([...unSponsoredEstates, element]);
-            unSponsoredEstates.push(element);
+            setUnSponsoredEstates((prev) => [...prev, element]);
+            // unSponsoredEstates.push(element);
           }
         }
       }
@@ -118,8 +123,9 @@ export default function AdvancedSearch() {
       setAllEstates(res.data.results);
       // console.log(allEstates);
     });
-  }, [allServices]);
+  }, []);
 
+  //tom map
   const mapElement = useRef();
   const [map, setMap] = useState({});
   useEffect(() => {
@@ -180,7 +186,7 @@ export default function AdvancedSearch() {
 
     setMap(map);
     return () => map.remove();
-  }, [allEstates.length]);
+  }, [sponsoredEstates, unSponsoredEstates]);
 
   console.log(unSponsoredEstates, "uns");
   console.log(sponsoredEstates, "s");
