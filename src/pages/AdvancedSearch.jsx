@@ -37,6 +37,8 @@ export default function AdvancedSearch() {
     beds = event.target.elements.bed_number.value;
     // setDistance(event.target.elements.distance.value);
 
+    const now = new Date();
+
     const options = {
       params: {
         ...(filteredServices && { services: filteredServices }),
@@ -90,23 +92,26 @@ export default function AdvancedSearch() {
 
               let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
               if (
-                parsedElement > Date.parse(new Date()) &&
+                parsedElement > Date.parse(now) &&
                 !sponsoredEstates.includes(element)
               ) {
                 // sponsoredEstates.push(element);
                 setSponsoredEstates((prev) => [...prev, element]);
               } else if (
-                unSponsoredEstates.filter((e) => e.id === element.id)
+                !unSponsoredEstates.filter((e) => e.id === element.id)
               ) {
                 // unSponsoredEstates.push(element);
                 setUnSponsoredEstates((prev) => [...prev, element]);
-              } else if (sponsoredEstates.filter((e) => e.id === element.id)) {
+                console.log(unSponsoredEstates, "PRIMO IF");
+              } else if (!sponsoredEstates.filter((e) => e.id === element.id)) {
                 setSponsoredEstates((prev) => [...prev, element]);
                 // sponsoredEstates.push(element);
               }
             }
           } else {
             setUnSponsoredEstates((prev) => [...prev, element]);
+            console.log(unSponsoredEstates, "LAST IF");
+
             // unSponsoredEstates.push(element);
           }
         }
