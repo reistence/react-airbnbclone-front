@@ -12,7 +12,7 @@ export default function () {
       routeName: "/",
     },
     {
-      label: "Search",
+      label: "Ricerca",
       link: "/advancedSearch",
       routeName: "/advancedSearch",
     },
@@ -26,6 +26,7 @@ export default function () {
   const [scrollPosition, setScrollPosition] = useState(0);
   function updateScroll() {
     setScrollPosition(window.scrollY);
+    setHamMenu(false);
   }
 
   window.addEventListener("scroll", updateScroll);

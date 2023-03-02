@@ -23,6 +23,11 @@ type estateProp = {
   // user_id: number;
 };
 
+type Image = {
+  id: number;
+  path: string;
+};
+
 export default function EstateCard({
   price,
   address,
@@ -36,8 +41,6 @@ export default function EstateCard({
     cover_img = cover_img;
   }
 
-  console.log(images);
-
   return (
     <>
       <div className={styles.estatecard}>
@@ -48,7 +51,7 @@ export default function EstateCard({
           {images &&
             images.map((img, key) => (
               <img
-                src={`http://127.0.0.1:8000/storage/${img.path}`}
+                src={`http://127.0.0.1:8000/storage/${img?.path}`}
                 alt=""
                 key={key}
               />

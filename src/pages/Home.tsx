@@ -3,7 +3,7 @@ import axios from "axios";
 import styles from "../styles/partials/home.module.scss";
 import EstateCard from "../components/EstateCard";
 
-type Estate = {
+export type Estate = {
   address: any;
   bathroom_number: number;
   cover_img: string;
