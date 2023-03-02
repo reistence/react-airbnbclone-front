@@ -2,7 +2,7 @@
 
 .estatecard {
   position: relative;
-  border: 1px solid black !important;
+  // border: 1px solid black !important;
 
   /* width */
   ::-webkit-scrollbar {
@@ -31,8 +31,8 @@
     transition: all 200ms;
   }
 
-  opacity: 0;
-  height: 280px;
+  // opacity: 0;
+  height: 260px;
   // border: 1px solid #c1baba;
   border-radius: 15px;
   overflow: hidden;
@@ -125,7 +125,7 @@
 
   &:hover {
     transition: all 300ms;
-    transform: scale(1.1);
+    transform: scale(1.05);
     z-index: 9;
     border-bottom: 3px solid #ff5a60;
     box-shadow: 0px 10px 10px #827b7b;
