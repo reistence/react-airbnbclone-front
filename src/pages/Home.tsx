@@ -26,13 +26,52 @@ export type Estate = {
 };
 
 export default function Home() {
-  const [allEstates, setAllEstates] = useState<Estate[]>([]);
+  const [unSponsoredEstates, setUnSponsoredEstates] = useState<Estate[]>([]);
+  const [sponsoredEstates, setSponsoredEstates] = useState<Estate[]>([]);
+  let now = Date.now();
+
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
-      setAllEstates([...res.data.results]);
-      console.log(allEstates);
+      // setAllEstates([...res.data.results]);
+      // console.log(allEstates);
+      setSponsoredEstates([]);
+      setUnSponsoredEstates([]);
+      if (res.data.success) {
+        // setAllEstates(res.data.results);
+        // console.log("filtrati", allEstates);
+        console.log(res.data.results);
+
+        for (let i = 0; i < res.data.results.length; i++) {
+          const element = res.data.results[i];
+
+          if (element.sponsors.length > 0) {
+            for (let j = 0; j < element.sponsors.length; j++) {
+              const sponsoredElement = element.sponsors[j];
+
+              let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
+              console.log("TCHECK", parsedElement, now);
+
+              if (parsedElement > now && !sponsoredEstates.includes(element)) {
+                setSponsoredEstates((prev) => [...prev, element]);
+              } else if (
+                !unSponsoredEstates.filter((e) => e.id === element.id)
+              ) {
+                setUnSponsoredEstates((prev) => [...prev, element]);
+              } else if (!sponsoredEstates.filter((e) => e.id === element.id)) {
+                setSponsoredEstates((prev) => [...prev, element]);
+              }
+            }
+          } else {
+            setUnSponsoredEstates((prev) => [...prev, element]);
+            // console.log(unSponsoredEstates, "LAST IF");
+          }
+          setUnSponsoredEstates((prev) => [...new Set(prev)]);
+        }
+      }
+      // setSponsoredEstates((prev) => [...new Set(prev)]);
     });
-    // console.log(allEstates);
+    console.log(unSponsoredEstates, "UN");
+    console.log(sponsoredEstates, "SP");
   }, []);
 
   return (
@@ -46,26 +85,25 @@ export default function Home() {
 
           <h2>In evidenza</h2>
           <div className={styles.cardscontainer}>
-            {allEstates
-              ? allEstates.map((estate, key: number) => (
-                  <EstateCard
-                    title={estate?.title}
-                    is_visible={estate.is_visible}
-                    price={estate.price}
-                    address={estate?.address}
-                    sponsors={estate.sponsors}
-                    cover_img={estate.cover_img}
-                    images={estate.images}
-                    key={key}
-                  ></EstateCard>
-                ))
-              : null}
+            {sponsoredEstates &&
+              sponsoredEstates.map((estate, key) => (
+                <EstateCard
+                  title={estate?.title}
+                  is_visible={estate.is_visible}
+                  price={estate.price}
+                  address={estate?.address}
+                  sponsors={estate.sponsors}
+                  cover_img={estate.cover_img}
+                  images={estate.images}
+                  key={key}
+                ></EstateCard>
+              ))}
           </div>
 
           <h2>All estates</h2>
           <div className={styles.cardscontainer}>
-            {allEstates &&
-              allEstates.map((estate, key) => (
+            {unSponsoredEstates &&
+              unSponsoredEstates.map((estate, key) => (
                 <EstateCard
                   title={estate?.title}
                   is_visible={estate.is_visible}

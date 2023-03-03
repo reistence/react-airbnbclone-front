@@ -96,7 +96,9 @@ export default function AdvancedSearch() {
                 !sponsoredEstates.includes(element)
               ) {
                 setSponsoredEstates((prev) => [...prev, element]);
-              } else if (!unSponsoredEstates.includes(element)) {
+              } else if (
+                !unSponsoredEstates.filter((e) => e.id === element.id)
+              ) {
                 setUnSponsoredEstates((prev) => [...prev, element]);
                 // console.table(
                 //   !unSponsoredEstates.includes(element),
