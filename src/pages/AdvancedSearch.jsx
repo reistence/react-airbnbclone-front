@@ -96,26 +96,26 @@ export default function AdvancedSearch() {
                 !sponsoredEstates.includes(element)
               ) {
                 setSponsoredEstates((prev) => [...prev, element]);
-              } else if (
-                !unSponsoredEstates.filter((e) => e.id === element.id)
-              ) {
+              } else if (!unSponsoredEstates.includes(element)) {
                 setUnSponsoredEstates((prev) => [...prev, element]);
-                // unSponsoredEstates.push(element);
-                console.log(unSponsoredEstates, "OOOOO");
+                // console.table(
+                //   !unSponsoredEstates.includes(element),
+                //   unSponsoredEstates,
+                //   "OOOOO"
+                // );
               } else if (!sponsoredEstates.filter((e) => e.id === element.id)) {
                 setSponsoredEstates((prev) => [...prev, element]);
               }
             }
           } else {
             setUnSponsoredEstates((prev) => [...prev, element]);
-            console.log(unSponsoredEstates, "LAST IF");
-
-            // unSponsoredEstates.push(element);
+            // console.log(unSponsoredEstates, "LAST IF");
           }
+          setUnSponsoredEstates((prev) => [...new Set(prev)]);
         }
       }
-      console.log(unSponsoredEstates, "uns");
-      console.log(sponsoredEstates, "s");
+      // console.log(unSponsoredEstates, "uns");
+      // console.log(sponsoredEstates, "s");
     });
   }
 
