@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import styles from "../styles/partials/home.module.scss";
 import EstateCard from "../components/EstateCard";
+import { useNavigate } from "react-router";
 
 export type Estate = {
   address: any;
@@ -69,6 +71,11 @@ export default function Home() {
     // console.log(unSponsoredEstates, "UN");
     // console.log(sponsoredEstates, "SP");
   }, []);
+  const navigate = useNavigate();
+
+  function goToAdvanced() {
+    navigate("/advancedSearch");
+  }
 
   return (
     <>
@@ -76,7 +83,10 @@ export default function Home() {
         <div className={styles.container}>
           <div className={styles.search}>
             <input type="text" name="" id="" placeholder="Ovunque" />
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <i
+              className="fa-solid fa-magnifying-glass"
+              onClick={goToAdvanced}
+            ></i>
           </div>
 
           <h2>In evidenza</h2>
