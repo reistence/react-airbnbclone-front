@@ -82,7 +82,13 @@ export default function Home() {
       <div className={styles.mycontainerfluid}>
         <div className={styles.container}>
           <div className={styles.search}>
-            <input type="text" name="" id="" placeholder="Ovunque" />
+            <input
+              type="text"
+              name=""
+              id=""
+              placeholder="Ovunque"
+              onKeyUp={(e) => (e.key === "Enter" ? goToAdvanced() : "")}
+            />
             <i
               className="fa-solid fa-magnifying-glass"
               onClick={goToAdvanced}
