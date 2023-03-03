@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useContext } from "react";
+import { AppContext } from "../Contexts/AppContext";
 import axios from "axios";
 import styles from "../styles/partials/home.module.scss";
 import EstateCard from "../components/EstateCard";
@@ -31,6 +31,8 @@ export default function Home() {
   const [unSponsoredEstates, setUnSponsoredEstates] = useState<Estate[]>([]);
   const [sponsoredEstates, setSponsoredEstates] = useState<Estate[]>([]);
   let now = Date.now();
+
+  const { setCity } = useContext(AppContext);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
@@ -84,10 +86,11 @@ export default function Home() {
           <div className={styles.search}>
             <input
               type="text"
-              name=""
-              id=""
+              name="city"
+              id="city"
               placeholder="Ovunque"
               onKeyUp={(e) => (e.key === "Enter" ? goToAdvanced() : "")}
+              onChange={(e) => setCity(e.target.value)}
             />
             <i
               className="fa-solid fa-magnifying-glass"

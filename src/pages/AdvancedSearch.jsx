@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { AppContext } from "../Contexts/AppContext";
+
 import axios from "axios";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import tt from "@tomtom-international/web-sdk-maps";
@@ -14,7 +16,9 @@ export default function AdvancedSearch() {
     });
   }, []);
 
-  let city, address, rooms, beds;
+  const { city, setCity } = useContext(AppContext);
+
+  let address, rooms, beds;
   const [distance, setDistance] = useState(15);
   const [filteredServices, setFilteredServices] = useState([]);
   // let sponsoredEstates = [];
@@ -22,6 +26,8 @@ export default function AdvancedSearch() {
 
   const [sponsoredEstates, setSponsoredEstates] = useState([]);
   const [unSponsoredEstates, setUnSponsoredEstates] = useState([]);
+
+  const now = new Date();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -31,13 +37,11 @@ export default function AdvancedSearch() {
     // sponsoredEstates = [];
     // unSponsoredEstates = [];
 
-    city = event.target.elements.city.value;
+    setCity(event.target.elements.city.value);
     address = event.target.elements.address.value;
     rooms = event.target.elements.room_number.value;
     beds = event.target.elements.bed_number.value;
     // setDistance(event.target.elements.distance.value);
-
-    const now = new Date();
 
     const options = {
       params: {
@@ -124,10 +128,109 @@ export default function AdvancedSearch() {
   const [allEstates, setAllEstates] = useState([]);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
-      setAllEstates(res.data.results);
-      // console.log(allEstates);
-    });
+    const options = {
+      params: {
+        ...(filteredServices && { services: filteredServices }),
+      },
+    };
+
+    if (city) {
+      options.params.city = city;
+    } else {
+      options.params.city = null;
+    }
+
+    options.params.distance = 20;
+
+    if (city) {
+      axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
+        setAllEstates([]);
+        // console.log(options, "OPTIONS");
+        if (res.data.success) {
+          setAllEstates(res.data.results);
+          // console.log("filtrati", allEstates);
+          console.log(res.data.results);
+
+          for (let i = 0; i < res.data.results.length; i++) {
+            const element = res.data.results[i];
+
+            if (element.sponsors.length > 0) {
+              for (let j = 0; j < element.sponsors.length; j++) {
+                const sponsoredElement = element.sponsors[j];
+
+                let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
+                if (
+                  parsedElement > Date.parse(now) &&
+                  !sponsoredEstates.includes(element)
+                ) {
+                  setSponsoredEstates((prev) => [...prev, element]);
+                } else if (
+                  !unSponsoredEstates.filter((e) => e.id === element.id)
+                ) {
+                  setUnSponsoredEstates((prev) => [...prev, element]);
+                } else if (
+                  !sponsoredEstates.filter((e) => e.id === element.id)
+                ) {
+                  setSponsoredEstates((prev) => [...prev, element]);
+                }
+              }
+            } else {
+              setUnSponsoredEstates((prev) => [...prev, element]);
+              // console.log(unSponsoredEstates, "LAST IF");
+            }
+            setUnSponsoredEstates((prev) => [...new Set(prev)]);
+            setSponsoredEstates((prev) => [...new Set(prev)]);
+          }
+        }
+        // console.log(unSponsoredEstates, "uns");
+        // console.log(sponsoredEstates, "s");
+      });
+    } else {
+      axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
+        setAllEstates(res.data.results);
+        // console.log(allEstates);
+        if (res.data.success) {
+          setAllEstates(res.data.results);
+          // console.log("filtrati", allEstates);
+          console.log(res.data.results);
+
+          for (let i = 0; i < res.data.results.length; i++) {
+            const element = res.data.results[i];
+
+            if (element.sponsors.length > 0) {
+              for (let j = 0; j < element.sponsors.length; j++) {
+                const sponsoredElement = element.sponsors[j];
+
+                let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
+                if (
+                  parsedElement > Date.parse(now) &&
+                  !sponsoredEstates.includes(element)
+                ) {
+                  setSponsoredEstates((prev) => [...prev, element]);
+                } else if (
+                  !unSponsoredEstates.filter((e) => e.id === element.id)
+                ) {
+                  setUnSponsoredEstates((prev) => [...prev, element]);
+                  // console.table(
+                  //   !unSponsoredEstates.includes(element),
+                  //   unSponsoredEstates,
+                  //   "OOOOO"
+                  // );
+                } else if (
+                  !sponsoredEstates.filter((e) => e.id === element.id)
+                ) {
+                  setSponsoredEstates((prev) => [...prev, element]);
+                }
+              }
+            } else {
+              setUnSponsoredEstates((prev) => [...prev, element]);
+              // console.log(unSponsoredEstates, "LAST IF");
+            }
+            setUnSponsoredEstates((prev) => [...new Set(prev)]);
+          }
+        }
+      });
+    }
   }, []);
 
   //tom map
@@ -204,7 +307,12 @@ export default function AdvancedSearch() {
             <div className={styles.addressSearch}>
               <input type="text" name="address" placeholder="Indirizzo" />
               <div className={styles.miniinputs}>
-                <input type="text" name="city" placeholder="Città" />
+                <input
+                  type="text"
+                  name="city"
+                  placeholder="Città"
+                  defaultValue={city}
+                />
                 <input type="number" name="room_number" placeholder="Stanze" />
                 <input type="number" name="bed_number" placeholder="Letti" />
               </div>
