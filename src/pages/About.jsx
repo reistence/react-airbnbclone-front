@@ -1,5 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../styles/partials/about.module.scss";
+import { gsap } from "gsap";
 import alessio from "../assets/us/alessio.png";
 import fabrizio from "../assets/us/fabrizio.jpg";
 import samuele from "../assets/us/samuele.jpeg";
@@ -51,7 +52,52 @@ export default function About() {
     }, 3000);
   }
 
-  useEffect(() => {
+  const wrap = useRef();
+  const tl = useRef();
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      tl.current = gsap
+        .timeline({ defaults: { stagger: 0.2 } })
+        .fromTo(
+          "h1",
+          { opacity: 0, y: "-100%", ease: "ease.Out" },
+          { opacity: 1, y: "0%", ease: "ease.Out" }
+        )
+        .fromTo(
+          "p",
+          { opacity: 0, x: "-200%", ease: "ease.Out" },
+          { opacity: 1, x: "0%", ease: "ease.Out" }
+        )
+        .fromTo(
+          "#first",
+          { opacity: 0, x: "-200%", ease: "ease.Out" },
+          { opacity: 1, x: "0%", ease: "ease.Out" }
+        )
+        .fromTo(
+          "#second",
+          {
+            opacity: 0,
+            x: "+200%",
+            ease: "ease.Out",
+          },
+          { opacity: 1, x: "0%", ease: "ease.Out" }
+        )
+        .fromTo(
+          "#third",
+          {
+            opacity: 0,
+            x: "+200%",
+            ease: "ease.Out",
+          },
+          { opacity: 1, x: "0%", ease: "ease.Out" }
+        )
+        .fromTo(
+          "#fourth",
+          { opacity: 0, x: "-200%", ease: "ease.Out" },
+          { opacity: 1, x: "0%", ease: "ease.Out" }
+        );
+    }, wrap);
+
     move();
   }, []);
 
@@ -63,7 +109,7 @@ export default function About() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.container} ref={wrap}>
         <h1>About Us</h1>
         <p>
           Boolking nasce come progetto finale del #team7 della classe #73 di
@@ -96,28 +142,28 @@ export default function About() {
           data-configuration={conf}
           data-roundness={round}
         >
-          <div className={styles.shape}>
+          <div id="first" className={styles.shape}>
             <div className={styles.img}>
               <a href="https://github.com/BetterCallAle">
                 <img alt="" src={alessio} />
               </a>
             </div>
           </div>
-          <div className={styles.shape}>
+          <div id="second" className={styles.shape}>
             <div className={styles.img}>
               <a href="https://github.com/FabrizioMisseri">
                 <img alt="" src={fabrizio} />
               </a>
             </div>
           </div>
-          <div className={styles.shape}>
+          <div id="third" className={styles.shape}>
             <div className={styles.img}>
               <a href="https://github.com/ImBlindForU">
                 <img alt="" src={samuele} />
               </a>
             </div>
           </div>
-          <div className={styles.shape}>
+          <div id="fourth" className={styles.shape}>
             <div className={styles.img}>
               <a href="https://github.com/reistence">
                 <img alt="" src={valerio} />
