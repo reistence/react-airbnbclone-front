@@ -15,7 +15,7 @@ function App() {
       <BrowserRouter>
         <AppHeader></AppHeader>
         <AppContext.Provider value={{ city, setCity }}>
-          <main style={{ paddingTop: "70px", height: "100%" }}>
+          <main style={{ paddingTop: "70px" }}>
             <Routes>
               <Route path="/" element={<Home></Home>}></Route>
               <Route
