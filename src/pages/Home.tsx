@@ -32,14 +32,10 @@ export default function Home() {
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
-      // setAllEstates([...res.data.results]);
-      // console.log(allEstates);
       setSponsoredEstates([]);
       setUnSponsoredEstates([]);
       if (res.data.success) {
-        // setAllEstates(res.data.results);
-        // console.log("filtrati", allEstates);
-        console.log(res.data.results);
+        // console.log(res.data.results);
 
         for (let i = 0; i < res.data.results.length; i++) {
           const element = res.data.results[i];
@@ -49,7 +45,7 @@ export default function Home() {
               const sponsoredElement = element.sponsors[j];
 
               let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
-              console.log("TCHECK", parsedElement, now);
+              // console.log("TCHECK", parsedElement, now);
 
               if (parsedElement > now && !sponsoredEstates.includes(element)) {
                 setSponsoredEstates((prev) => [...prev, element]);
@@ -70,8 +66,8 @@ export default function Home() {
       }
       // setSponsoredEstates((prev) => [...new Set(prev)]);
     });
-    console.log(unSponsoredEstates, "UN");
-    console.log(sponsoredEstates, "SP");
+    // console.log(unSponsoredEstates, "UN");
+    // console.log(sponsoredEstates, "SP");
   }, []);
 
   return (
