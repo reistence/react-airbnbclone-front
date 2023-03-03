@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useLayoutEffect } from "react";
+import { gsap } from "gsap";
 import styles from "./estatecard.module.scss";
 
 type estateProp = {
@@ -41,9 +42,23 @@ export default function EstateCard({
     cover_img = cover_img;
   }
 
+  const wrap = useRef();
+  const tl = useRef();
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      tl.current = gsap
+        .timeline({ defaults: { stagger: 0.3 } })
+        .fromTo(
+          ".cad",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        );
+    });
+  }, []);
+
   return (
     <>
-      <div className={styles.estatecard}>
+      <div className={`${styles.estatecard} cad`}>
         <div className={styles.price}>€{Math.trunc(parseInt(price))}</div>
         <div className={styles.estateimg}>
           <img src={cover_img} alt="cover" />

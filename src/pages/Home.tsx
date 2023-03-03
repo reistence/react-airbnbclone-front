@@ -1,9 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import { AppContext } from "../Contexts/AppContext";
 import axios from "axios";
 import styles from "../styles/partials/home.module.scss";
 import EstateCard from "../components/EstateCard";
 import { useNavigate } from "react-router";
+import gsap from "gsap";
 
 export type Estate = {
   address: any;
@@ -79,11 +86,25 @@ export default function Home() {
     navigate("/advancedSearch");
   }
 
+  const wrap = useRef();
+  const tl = useRef();
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      tl.current = gsap
+        .timeline({ defaults: { stagger: 0.5 } })
+        .fromTo(
+          "#ovunque",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        );
+    });
+  }, []);
+
   return (
     <>
       <div className={styles.mycontainerfluid}>
         <div className={styles.container}>
-          <div className={styles.search}>
+          <div id="ovunque" className={styles.search}>
             <input
               type="text"
               name="city"

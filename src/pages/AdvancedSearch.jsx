@@ -1,6 +1,12 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useContext,
+  useLayoutEffect,
+} from "react";
 import { AppContext } from "../Contexts/AppContext";
-
+import { gsap } from "gsap";
 import axios from "axios";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import tt from "@tomtom-international/web-sdk-maps";
@@ -250,12 +256,64 @@ export default function AdvancedSearch() {
   // console.log(unSponsoredEstates, "uns");
   // console.log(sponsoredEstates, "s");
 
+  //GSAP ANIMATION
+  const wrap = useRef();
+  const tl = useRef();
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      tl.current = gsap
+        .timeline({ defaults: { stagger: 0.1 } })
+        .fromTo(
+          "h1",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          "#search",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          "input",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          ".km",
+          {
+            opacity: 0,
+            ease: "ease.Out",
+          },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          ".our-btn-header",
+          {
+            opacity: 0,
+
+            ease: "ease.Out",
+          },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          "#map",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        )
+        .fromTo(
+          "#card-cont",
+          { opacity: 0, ease: "ease.Out" },
+          { opacity: 1, ease: "ease.Out" }
+        );
+    }, wrap);
+  }, []);
+
   return (
     <>
-      <div className={styles.mycontainerfluid}>
+      <div className={styles.mycontainerfluid} ref={wrap}>
         <h1>Ricerca Avanzata</h1>
         <div className={styles.container}>
-          <form onSubmit={handleSubmit} className={styles.search}>
+          <form id="search" onSubmit={handleSubmit} className={styles.search}>
             <div className={styles.addressSearch}>
               <input type="text" name="address" placeholder="Indirizzo" />
               <div className={styles.miniinputs}>
@@ -279,7 +337,7 @@ export default function AdvancedSearch() {
                   defaultValue={distance}
                   className={styles.slider}
                 />
-                <span className={styles.km}>{distance} km</span>
+                <span className="km">{distance} km</span>
               </div>
             </div>
             <div className={styles.services}>
@@ -313,39 +371,38 @@ export default function AdvancedSearch() {
           </form>
         </div>
         <div id="map" className={styles.tommap}></div>
-        <div className="container">
-          <h2>In Evidenza</h2>
-          <div className={styles.cardscontainer}>
-            {sponsoredEstates &&
-              sponsoredEstates.map((estate, key) => (
-                <EstateCard
-                  title={estate?.title}
-                  is_visible={estate.is_visible}
-                  price={estate.price}
-                  address={estate?.address}
-                  sponsors={estate.sponsors}
-                  cover_img={estate.cover_img}
-                  images={estate.images}
-                  key={key}
-                ></EstateCard>
-              ))}
-          </div>
-          <h2>All</h2>
-          <div className={styles.cardscontainer}>
-            {unSponsoredEstates &&
-              unSponsoredEstates.map((estate, key) => (
-                <EstateCard
-                  title={estate?.title}
-                  is_visible={estate.is_visible}
-                  price={estate.price}
-                  address={estate?.address}
-                  sponsors={estate.sponsors}
-                  cover_img={estate.cover_img}
-                  images={estate.images}
-                  key={key}
-                ></EstateCard>
-              ))}
-          </div>
+
+        <h2>In Evidenza</h2>
+        <div id="card-cont" className={styles.cardscontainer}>
+          {sponsoredEstates &&
+            sponsoredEstates.map((estate, key) => (
+              <EstateCard
+                title={estate?.title}
+                is_visible={estate.is_visible}
+                price={estate.price}
+                address={estate?.address}
+                sponsors={estate.sponsors}
+                cover_img={estate.cover_img}
+                images={estate.images}
+                key={key}
+              ></EstateCard>
+            ))}
+        </div>
+        <h2>All</h2>
+        <div className={styles.cardscontainer}>
+          {unSponsoredEstates &&
+            unSponsoredEstates.map((estate, key) => (
+              <EstateCard
+                title={estate?.title}
+                is_visible={estate.is_visible}
+                price={estate.price}
+                address={estate?.address}
+                sponsors={estate.sponsors}
+                cover_img={estate.cover_img}
+                images={estate.images}
+                key={key}
+              ></EstateCard>
+            ))}
         </div>
       </div>
     </>
