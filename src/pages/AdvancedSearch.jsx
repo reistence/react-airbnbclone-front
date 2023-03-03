@@ -142,95 +142,46 @@ export default function AdvancedSearch() {
 
     options.params.distance = 20;
 
-    if (city) {
-      axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
-        setAllEstates([]);
-        // console.log(options, "OPTIONS");
-        if (res.data.success) {
-          setAllEstates(res.data.results);
-          // console.log("filtrati", allEstates);
-          console.log(res.data.results);
-
-          for (let i = 0; i < res.data.results.length; i++) {
-            const element = res.data.results[i];
-
-            if (element.sponsors.length > 0) {
-              for (let j = 0; j < element.sponsors.length; j++) {
-                const sponsoredElement = element.sponsors[j];
-
-                let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
-                if (
-                  parsedElement > Date.parse(now) &&
-                  !sponsoredEstates.includes(element)
-                ) {
-                  setSponsoredEstates((prev) => [...prev, element]);
-                } else if (
-                  !unSponsoredEstates.filter((e) => e.id === element.id)
-                ) {
-                  setUnSponsoredEstates((prev) => [...prev, element]);
-                } else if (
-                  !sponsoredEstates.filter((e) => e.id === element.id)
-                ) {
-                  setSponsoredEstates((prev) => [...prev, element]);
-                }
-              }
-            } else {
-              setUnSponsoredEstates((prev) => [...prev, element]);
-              // console.log(unSponsoredEstates, "LAST IF");
-            }
-            setUnSponsoredEstates((prev) => [...new Set(prev)]);
-            setSponsoredEstates((prev) => [...new Set(prev)]);
-          }
-        }
-        // console.log(unSponsoredEstates, "uns");
-        // console.log(sponsoredEstates, "s");
-      });
-    } else {
-      axios.get("http://127.0.0.1:8000/api/estates").then((res) => {
+    axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
+      setAllEstates([]);
+      // console.log(options, "OPTIONS");
+      if (res.data.success) {
         setAllEstates(res.data.results);
-        // console.log(allEstates);
-        if (res.data.success) {
-          setAllEstates(res.data.results);
-          // console.log("filtrati", allEstates);
-          console.log(res.data.results);
+        // console.log("filtrati", allEstates);
+        console.log(res.data.results);
 
-          for (let i = 0; i < res.data.results.length; i++) {
-            const element = res.data.results[i];
+        for (let i = 0; i < res.data.results.length; i++) {
+          const element = res.data.results[i];
 
-            if (element.sponsors.length > 0) {
-              for (let j = 0; j < element.sponsors.length; j++) {
-                const sponsoredElement = element.sponsors[j];
+          if (element.sponsors.length > 0) {
+            for (let j = 0; j < element.sponsors.length; j++) {
+              const sponsoredElement = element.sponsors[j];
 
-                let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
-                if (
-                  parsedElement > Date.parse(now) &&
-                  !sponsoredEstates.includes(element)
-                ) {
-                  setSponsoredEstates((prev) => [...prev, element]);
-                } else if (
-                  !unSponsoredEstates.filter((e) => e.id === element.id)
-                ) {
-                  setUnSponsoredEstates((prev) => [...prev, element]);
-                  // console.table(
-                  //   !unSponsoredEstates.includes(element),
-                  //   unSponsoredEstates,
-                  //   "OOOOO"
-                  // );
-                } else if (
-                  !sponsoredEstates.filter((e) => e.id === element.id)
-                ) {
-                  setSponsoredEstates((prev) => [...prev, element]);
-                }
+              let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
+              if (
+                parsedElement > Date.parse(now) &&
+                !sponsoredEstates.includes(element)
+              ) {
+                setSponsoredEstates((prev) => [...prev, element]);
+              } else if (
+                !unSponsoredEstates.filter((e) => e.id === element.id)
+              ) {
+                setUnSponsoredEstates((prev) => [...prev, element]);
+              } else if (!sponsoredEstates.filter((e) => e.id === element.id)) {
+                setSponsoredEstates((prev) => [...prev, element]);
               }
-            } else {
-              setUnSponsoredEstates((prev) => [...prev, element]);
-              // console.log(unSponsoredEstates, "LAST IF");
             }
-            setUnSponsoredEstates((prev) => [...new Set(prev)]);
+          } else {
+            setUnSponsoredEstates((prev) => [...prev, element]);
+            // console.log(unSponsoredEstates, "LAST IF");
           }
+          setUnSponsoredEstates((prev) => [...new Set(prev)]);
+          setSponsoredEstates((prev) => [...new Set(prev)]);
         }
-      });
-    }
+      }
+      // console.log(unSponsoredEstates, "uns");
+      // console.log(sponsoredEstates, "s");
+    });
   }, []);
 
   //tom map
@@ -298,6 +249,7 @@ export default function AdvancedSearch() {
 
   // console.log(unSponsoredEstates, "uns");
   // console.log(sponsoredEstates, "s");
+
   return (
     <>
       <div className={styles.mycontainerfluid}>
@@ -312,6 +264,7 @@ export default function AdvancedSearch() {
                   name="city"
                   placeholder="Città"
                   defaultValue={city}
+                  onChange={(e) => setCity(e.target.value)}
                 />
                 <input type="number" name="room_number" placeholder="Stanze" />
                 <input type="number" name="bed_number" placeholder="Letti" />
