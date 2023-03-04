@@ -135,6 +135,8 @@ export default function AdvancedSearch() {
     });
   }
 
+  //unprobable fix to the sum of estates on resfresh due to spread and prev in sorting
+  /// TODO TRY SET UNSPO/SPO SORT ON ANOTHER array THEN USE IT IN SETUNSP/SP(array)
   useEffect(() => {
     const options = {
       params: {
