@@ -14,7 +14,21 @@ import styles from "../styles/partials/adsearch.module.scss";
 import EstateCard from "../components/EstateCard";
 
 export default function AdvancedSearch() {
-  //servizi
+  const { city, setCity } = useContext(AppContext);
+  const [allEstates, setAllEstates] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [sponsoredEstates, setSponsoredEstates] = useState([]);
+  const [unSponsoredEstates, setUnSponsoredEstates] = useState([]);
+  const [distance, setDistance] = useState(15);
+  let address, rooms, beds;
+  const now = new Date();
+  const [bho, setBho] = useState(false);
+
+  //tom map
+  const mapElement = useRef();
+  const [map, setMap] = useState({});
+
+  //services
   const [allServices, setAllServices] = useState([]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/services").then((res) => {
@@ -22,17 +36,7 @@ export default function AdvancedSearch() {
     });
   }, []);
 
-  const { city, setCity } = useContext(AppContext);
-
-  let address, rooms, beds;
-  const [distance, setDistance] = useState(15);
-  const [filteredServices, setFilteredServices] = useState([]);
-
-  const [sponsoredEstates, setSponsoredEstates] = useState([]);
-  const [unSponsoredEstates, setUnSponsoredEstates] = useState([]);
-
-  const now = new Date();
-
+  // search and sort
   function handleSubmit(event) {
     event.preventDefault();
     setAllEstates([]);
@@ -131,8 +135,6 @@ export default function AdvancedSearch() {
     });
   }
 
-  const [allEstates, setAllEstates] = useState([]);
-
   useEffect(() => {
     const options = {
       params: {
@@ -191,9 +193,7 @@ export default function AdvancedSearch() {
     });
   }, [allServices]);
 
-  //tom map
-  const mapElement = useRef();
-  const [map, setMap] = useState({});
+  // map ini
   useEffect(() => {
     let center = [];
 
@@ -253,9 +253,6 @@ export default function AdvancedSearch() {
     setMap(map);
     return () => map.remove();
   }, [sponsoredEstates, unSponsoredEstates]);
-
-  // console.log(unSponsoredEstates, "uns");
-  // console.log(sponsoredEstates, "s");
 
   //GSAP ANIMATION
   const wrap = useRef();
@@ -391,7 +388,7 @@ export default function AdvancedSearch() {
         </div>
 
         {unSponsoredEstates.length > 0 && <h2>All</h2>}
-        <div className={styles.cardscontainer}>
+        <div id="card-cont" className={styles.cardscontainer}>
           {unSponsoredEstates &&
             unSponsoredEstates.map((estate, key) => (
               <EstateCard

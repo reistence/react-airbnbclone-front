@@ -49,7 +49,7 @@ export default function About() {
 
       prev = index;
       // console.log("moving");
-    }, 3000);
+    }, 5000);
   }
 
   const wrap = useRef();
