@@ -27,8 +27,6 @@ export default function AdvancedSearch() {
   let address, rooms, beds;
   const [distance, setDistance] = useState(15);
   const [filteredServices, setFilteredServices] = useState([]);
-  // let sponsoredEstates = [];
-  // let unSponsoredEstates = [];
 
   const [sponsoredEstates, setSponsoredEstates] = useState([]);
   const [unSponsoredEstates, setUnSponsoredEstates] = useState([]);
