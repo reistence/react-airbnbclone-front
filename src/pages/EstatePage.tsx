@@ -4,6 +4,13 @@ import { useParams } from "react-router-dom";
 import styles from "../styles/partials/estatepage.module.scss";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import tt from "@tomtom-international/web-sdk-maps";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Scrollbar, Parallax } from "swiper";
+import "swiper/css";
+import "swiper/scss/parallax";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import { Estate } from "./Home";
 
 export default function EstatePage() {
@@ -136,24 +143,57 @@ export default function EstatePage() {
         <div className={styles.estateshowimg}>
           <section>
             <div className={styles.wide}>
-              <div className={styles.swiper}>
-                <div className={styles.swiperwrapper}>
+              <div className={styles.swiper} id="swiper-2">
+                <div
+                  className={styles.swiperwrapper}
+                  style={{ marginBottom: "2em" }}
+                >
                   <>
-                    <div className={styles.swiperslide}>
-                      <figure>
-                        <img src={imgPath(singleEstate?.cover_img)} alt="" />
-                      </figure>
-                    </div>
-                    {singleEstate?.images.map((img, key) => {
-                      <div className={styles.swiperslide} key={key}>
-                        <figure>
+                    <Swiper
+                      style={{ paddingBottom: "2em" }}
+                      modules={[Navigation, Pagination, Scrollbar, Parallax]}
+                      spaceBetween={25}
+                      parallax={true}
+                      slidesPerView={1}
+                      centeredSlides={true}
+                      loop={false}
+                      pagination={{ clickable: true }}
+                      keyboard={{ enabled: true }}
+                      breakpoints={{
+                        800: { slidesPerView: 1.5, spaceBetween: 25 },
+                        1400: { slidesPerView: 1.5, spaceBetween: 25 },
+                      }}
+                    >
+                      <SwiperSlide>
+                        <img
+                          style={{
+                            width: "100%",
+                            objectFit: "cover",
+                            height: "300px",
+                            objectPosition: "center",
+                            boxShadow: "0px 10px 5px #827b7b",
+                            borderRadius: "15px",
+                          }}
+                          src={imgPath(singleEstate?.cover_img)}
+                          alt=""
+                        />
+                      </SwiperSlide>
+                      {singleEstate?.images.map((img, key) => (
+                        <SwiperSlide key={key}>
                           <img
+                            style={{
+                              width: "100%",
+                              objectFit: "cover",
+                              height: "300px",
+                              boxShadow: "0px 10px 5px #827b7b",
+                              borderRadius: "15px",
+                            }}
                             src={`http://127.0.0.1:8000/storage/${img?.path}`}
                             alt=""
                           />
-                        </figure>
-                      </div>;
-                    })}
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
                   </>
                 </div>
               </div>
@@ -163,11 +203,9 @@ export default function EstatePage() {
         <div className={styles.containertext}>
           <div className={styles.estateshowtxt}>
             <p>
-              {" "}
               <span>Tipologia:</span> {singleEstate?.type}
             </p>
             <p>
-              {" "}
               <span>Metri Quadri:</span> {singleEstate?.mq}&#x33A1;
             </p>
             {singleEstate?.price && (
@@ -197,20 +235,21 @@ export default function EstatePage() {
             )}
             {loader && (
               <>
-                {singleEstate.services && (
+                {singleEstate?.services && (
                   <>
                     <p>
                       <span>Servizi:</span>
                     </p>
                     <ul className={styles.services}>
-                      {singleEstate?.services?.map((ser, key) => {
-                        <li key={key}>
-                          <span>
-                            <i className="fa-brands fa-airbnb"></i>
-                          </span>
-                          {ser.name}
-                        </li>;
-                      })}
+                      {singleEstate &&
+                        singleEstate?.services.map((ser, key) => (
+                          <li key={key}>
+                            <span>
+                              <i className="fa-brands fa-airbnb"></i>
+                            </span>
+                            {ser.name}
+                          </li>
+                        ))}
                     </ul>
                   </>
                 )}
