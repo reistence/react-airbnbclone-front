@@ -6,6 +6,7 @@ import AdvancedSearch from "./pages/AdvancedSearch";
 import Home from "./pages/Home";
 import "./styles/general.scss";
 import { AppContext } from "./Contexts/AppContext";
+import EstatePage from "./pages/EstatePage";
 
 function App() {
   const [city, setCity] = useState("");
@@ -23,6 +24,10 @@ function App() {
                 element={<AdvancedSearch></AdvancedSearch>}
               ></Route>
               <Route path="/about" element={<About></About>}></Route>
+              <Route
+                path="/estate/:slug"
+                element={<EstatePage></EstatePage>}
+              ></Route>
             </Routes>
           </main>
         </AppContext.Provider>

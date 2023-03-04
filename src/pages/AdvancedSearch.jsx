@@ -126,6 +126,8 @@ export default function AdvancedSearch() {
           setUnSponsoredEstates((prev) => [...new Set(prev)]);
         }
       }
+
+      return unSponsoredEstates, sponsoredEstates;
       // console.log(unSponsoredEstates, "uns");
       // console.log(sponsoredEstates, "s");
     });
@@ -156,8 +158,8 @@ export default function AdvancedSearch() {
         // console.log("filtrati", allEstates);
         console.log(res.data.results);
 
-        for (let i = 0; i < res.data.results.length; i++) {
-          const element = res.data.results[i];
+        for (let i = 0; i < allEstates.length; i++) {
+          const element = allEstates[i];
 
           if (element.sponsors.length > 0) {
             for (let j = 0; j < element.sponsors.length; j++) {
@@ -181,14 +183,15 @@ export default function AdvancedSearch() {
             setUnSponsoredEstates((prev) => [...prev, element]);
             // console.log(unSponsoredEstates, "LAST IF");
           }
-          setUnSponsoredEstates((prev) => [...new Set(prev)]);
-          setSponsoredEstates((prev) => [...new Set(prev)]);
         }
+        setUnSponsoredEstates((prev) => [...new Set(prev)]);
+        setSponsoredEstates((prev) => [...new Set(prev)]);
       }
-      // console.log(unSponsoredEstates, "uns");
-      // console.log(sponsoredEstates, "s");
+
+      console.log(unSponsoredEstates, "uns");
+      console.log(sponsoredEstates, "s");
     });
-  }, []);
+  }, [allServices]);
 
   //tom map
   const mapElement = useRef();
@@ -234,7 +237,7 @@ export default function AdvancedSearch() {
       //custom popup
       const customPopUp = document.createElement("div");
       customPopUp.id = "my-pop-up";
-      customPopUp.innerHTML = `<p> <a href="/estates/${estate.slug}"> ${
+      customPopUp.innerHTML = `<p> <a href="/estate/${estate.slug}"> ${
         estate.title
       }</a>  </br> €${estate.price ? estate.price : "Non specificato"} </p>`;
       customPopUp.style.color = "black";
@@ -371,12 +374,12 @@ export default function AdvancedSearch() {
           </form>
         </div>
         <div id="map" className={styles.tommap}></div>
-
-        <h2>In Evidenza</h2>
+        {sponsoredEstates.length > 0 && <h2>In Evidenza</h2>}
         <div id="card-cont" className={styles.cardscontainer}>
           {sponsoredEstates &&
             sponsoredEstates.map((estate, key) => (
               <EstateCard
+                slug={estate.slug}
                 title={estate?.title}
                 is_visible={estate.is_visible}
                 price={estate.price}
@@ -388,11 +391,13 @@ export default function AdvancedSearch() {
               ></EstateCard>
             ))}
         </div>
-        <h2>All</h2>
+
+        {unSponsoredEstates.length > 0 && <h2>All</h2>}
         <div className={styles.cardscontainer}>
           {unSponsoredEstates &&
             unSponsoredEstates.map((estate, key) => (
               <EstateCard
+                slug={estate.slug}
                 title={estate?.title}
                 is_visible={estate.is_visible}
                 price={estate.price}

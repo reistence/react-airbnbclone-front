@@ -15,6 +15,7 @@ import gsap from "gsap";
 export type Estate = {
   address: any;
   bathroom_number: number;
+  bed_number: string;
   cover_img: string;
   created_at: string;
   description: string;
@@ -27,6 +28,7 @@ export type Estate = {
   room_number: number;
   slug: string;
   sponsors: object[];
+  services: object[];
   title: string;
   type: string;
   updated_at: string;
@@ -124,6 +126,7 @@ export default function Home() {
             {sponsoredEstates &&
               sponsoredEstates.map((estate, key) => (
                 <EstateCard
+                  slug={estate.slug}
                   title={estate?.title}
                   is_visible={estate.is_visible}
                   price={estate.price}
@@ -141,6 +144,7 @@ export default function Home() {
             {unSponsoredEstates &&
               unSponsoredEstates.map((estate, key) => (
                 <EstateCard
+                  slug={estate.slug}
                   title={estate?.title}
                   is_visible={estate.is_visible}
                   price={estate.price}

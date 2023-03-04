@@ -1,6 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import styles from "./estatecard.module.scss";
+import { Link } from "react-router-dom";
 
 type estateProp = {
   address: any;
@@ -15,7 +16,7 @@ type estateProp = {
   // mq: number;
   price: string;
   // room_number: number;
-  // slug: string;
+  slug: string;
   sponsors: object[];
   title: string;
   // type: string;
@@ -35,6 +36,7 @@ export default function EstateCard({
   title,
   cover_img,
   images,
+  slug,
 }: estateProp) {
   if (cover_img.includes("cover/")) {
     cover_img = `http://127.0.0.1:8000/storage/${cover_img}`;
@@ -58,7 +60,7 @@ export default function EstateCard({
 
   return (
     <>
-      <div className={`${styles.estatecard} cad`}>
+      <Link to={`/estate/${slug}`} className={`${styles.estatecard} cad`}>
         <div className={styles.price}>€{Math.trunc(parseInt(price))}</div>
         <div className={styles.estateimg}>
           <img src={cover_img} alt="cover" />
@@ -80,7 +82,7 @@ export default function EstateCard({
             <p>{title}</p>
           </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 }
