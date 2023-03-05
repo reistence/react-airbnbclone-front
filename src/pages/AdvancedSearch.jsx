@@ -22,6 +22,7 @@ export default function AdvancedSearch() {
   const [distance, setDistance] = useState(15);
   let address, rooms, beds;
   const now = new Date();
+
   const [bho, setBho] = useState(false);
 
   //tom map
@@ -146,6 +147,8 @@ export default function AdvancedSearch() {
       },
     };
 
+    console.log(filteredServices);
+
     if (city) {
       options.params.city = city;
     } else {
@@ -172,11 +175,11 @@ export default function AdvancedSearch() {
               const sponsoredElement = element.sponsors[j];
 
               let parsedElement = Date.parse(sponsoredElement.pivot.end_date);
-              if (
-                parsedElement > Date.parse(now) &&
-                !sponsoredEstates.includes(element)
-              ) {
+              console.log(Date.parse(now), parsedElement, "TIme");
+              if (parsedElement > Date.parse(now)) {
                 setSponsoredEstates((prev) => [...prev, element]);
+              } else if (parsedElement < Date.parse(now)) {
+                setUnSponsoredEstates((prev) => [...prev, element]);
               } else if (
                 !unSponsoredEstates.filter((e) => e.id === element.id)
               ) {
@@ -190,12 +193,12 @@ export default function AdvancedSearch() {
             // console.log(unSponsoredEstates, "LAST IF");
           }
         }
-        setUnSponsoredEstates((prev) => [...new Set(prev)]);
-        setSponsoredEstates((prev) => [...new Set(prev)]);
       }
 
       console.log(unSponsoredEstates, "uns");
       console.log(sponsoredEstates, "s");
+      setUnSponsoredEstates((prev) => [...new Set(prev)]);
+      setSponsoredEstates((prev) => [...new Set(prev)]);
     });
   }, [allServices]);
 
