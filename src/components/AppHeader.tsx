@@ -43,10 +43,10 @@ export default function () {
   return (
     <header className={scrollPosition > 20 ? `${styles.faded}` : ""}>
       <div className={styles.container}>
-        <div className={styles.logo}>
+        <Link to={"/"} className={styles.logo}>
           <img src={logo} alt="Boolking" />
           <span>AirBnB</span>
-        </div>
+        </Link>
 
         <nav>
           <ul>
