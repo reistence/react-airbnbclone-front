@@ -4,7 +4,7 @@ import styles from "../styles/partials/notfound.module.scss";
 
 export default function NotFound() {
   const [MousePosition, setMousePosition] = useState({ left: 0, top: 0 });
-  function handleMouseMove(ev) {
+  function handleMouseMove(ev: any) {
     setMousePosition({ left: ev.pageX, top: ev.pageY });
   }
   const left = document.querySelector(".leftside");

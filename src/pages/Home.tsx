@@ -91,7 +91,7 @@ export default function Home() {
   }
 
   const wrap = useRef();
-  const tl = useRef();
+  const tl: any = useRef();
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       tl.current = gsap
