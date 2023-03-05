@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import AppHeader from "./components/AppHeader";
 import About from "./pages/About";
 import AdvancedSearch from "./pages/AdvancedSearch";
@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import "./styles/general.scss";
 import { AppContext } from "./Contexts/AppContext";
 import EstatePage from "./pages/EstatePage";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [city, setCity] = useState("");
@@ -28,6 +29,11 @@ function App() {
                 path="/estate/:slug"
                 element={<EstatePage></EstatePage>}
               ></Route>
+              <Route path="*" element={<NotFound></NotFound>}></Route>
+              {/* <Route
+                path="*"
+                element={<Navigate to="/notfound" replace />}
+              ></Route> */}
             </Routes>
           </main>
         </AppContext.Provider>

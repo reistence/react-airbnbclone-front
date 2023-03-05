@@ -69,9 +69,12 @@ export default function () {
           <i className="fa-solid fa-bars" onClick={() => toggleMenu()}></i>
           {hamMenu ? (
             <ul>
-              {navHeaderList.map((hlink, key) => (
-                <li key={key}>{hlink.label}</li>
-              ))}
+              {navHeaderList &&
+                navHeaderList.map((hlink, key) => (
+                  <li key={key}>
+                    <Link to={hlink.routeName}> {hlink.label}</Link>
+                  </li>
+                ))}
               <li className={styles.external}>
                 <a href="http://127.0.0.1:8000/login">Login</a>
               </li>

@@ -1,0 +1,50 @@
+@use "./_mixins" as *;
+
+.side {
+  display: grid;
+  height: 95vh;
+  overflow: hidden;
+  place-items: center;
+  position: absolute;
+  width: 100%;
+}
+
+.side .title {
+  /* font-family: "Rubik", sans-serif; */
+  font-size: 8vw;
+  margin: 0px 10vw;
+  width: 80vw;
+  text-align: center;
+}
+
+.side .fancy {
+  font-family: "Lobster", cursive;
+  font-size: 1.3em;
+  line-height: 0.8em;
+}
+
+.leftside {
+  background-color: #ff5a60;
+  width: 60%;
+  z-index: 2;
+}
+
+.leftside .title {
+  color: white;
+}
+
+.leftside .fancy {
+  color: black;
+}
+
+.rightside {
+  background-color: white;
+}
+
+.rightside .title {
+  color: black;
+}
+
+.rightside .fancy {
+  color: #ff5a60;
+}
