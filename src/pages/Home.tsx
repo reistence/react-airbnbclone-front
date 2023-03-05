@@ -62,6 +62,8 @@ export default function Home() {
 
               if (parsedElement > now && !sponsoredEstates.includes(element)) {
                 setSponsoredEstates((prev) => [...prev, element]);
+              } else if (parsedElement < now) {
+                setUnSponsoredEstates((prev) => [...prev, element]);
               } else if (
                 !unSponsoredEstates.filter((e) => e.id === element.id)
               ) {
