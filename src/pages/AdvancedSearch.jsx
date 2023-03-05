@@ -89,6 +89,8 @@ export default function AdvancedSearch() {
 
     axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
       setAllEstates([]);
+      setUnSponsoredEstates([]);
+      setSponsoredEstates([]);
       // console.log(options, "OPTIONS");
       if (res.data.success) {
         setAllEstates(res.data.results);
@@ -154,6 +156,8 @@ export default function AdvancedSearch() {
 
     axios.get("http://127.0.0.1:8000/api/estates", options).then((res) => {
       setAllEstates([]);
+      setUnSponsoredEstates([]);
+      setSponsoredEstates([]);
       // console.log(options, "OPTIONS");
       if (res.data.success) {
         setAllEstates(res.data.results);
